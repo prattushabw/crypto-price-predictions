@@ -13,12 +13,6 @@ A small pipeline that:
 ## Setup
 CMC_API_KEY=your_coinmarketcap_key
 PPLX_API_KEY=your_perplexity_key
-```
-
-2. (Optional) Install dependencies:
-```bash
-pip install requests pandas matplotlib python-dotenv
-```
 
 ## Flow of the Code
 
