@@ -1,14 +1,15 @@
 import http.client
 import json
+import os
+from dotenv import load_dotenv
 
-
+load_dotenv()
 connection = http.client.HTTPSConnection("pro-api.coinmarketcap.com")
-api_key = "2ca92cfc-43ad-4ec6-9f43-353fb6bf7085"
-
+coinMarketCap_api_key = os.getenv("CMC_API_KEY")
 
 headers = {
     "Accepts": "application/json",
-    "X-CMC_PRO_API_KEY": api_key
+    "X-CMC_PRO_API_KEY": coinMarketCap_api_key
 }
 
 latest_endpoint = "/v1/cryptocurrency/listings/latest"

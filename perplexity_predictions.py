@@ -1,11 +1,15 @@
 import http.client
 import json
 import re
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 api_host = "api.perplexity.ai"
 api_endpoint = "/chat/completions"
-api_key = "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"
+perplexity_api_key =  os.getenv("PPLX_API_KEY")
 
 input_file = "12-3-2024 data.json"
 output_file = "12-4-2024 prediction.json"

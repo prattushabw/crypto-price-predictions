@@ -4,15 +4,18 @@ import http.client
 import json
 import re
 
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def fetch_and_save_data():
     """Fetches cryptocurrency data and saves it to a JSON file."""
     connection = http.client.HTTPSConnection("pro-api.coinmarketcap.com")
-    api_key = "2ca92cfc-43ad-4ec6-9f43-353fb6bf7085"
+    coinMarketCap_api_key = os.getenv("CMC_API_KEY")
 
     headers = {
         "Accepts": "application/json",
-        "X-CMC_PRO_API_KEY": api_key
+        "X-CMC_PRO_API_KEY": coinMarketCap_api_key
     }
 
     latest_endpoint = "/v1/cryptocurrency/listings/latest"
@@ -29,7 +32,11 @@ def fetch_and_save_data():
         return None
 
     today_date = datetime.datetime.now().strftime("%m-%d-%Y")
-    output_file = f"{today_date} data.json"
+
+    output_dir = "cryptocurrency_data"
+    os.makedirs(output_dir, exist_ok=True)
+
+    output_file = os.path.join(output_dir, f"{today_date}.json")
 
     results = []
     for currency in latest_data.get("data", []):
@@ -67,10 +74,12 @@ def generate_predictions(data_file):
     """Generates predictions using an external AI model and saves them to a JSON file."""
     api_host = "api.perplexity.ai"
     api_endpoint = "/chat/completions"
-    api_key = "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"
+    perplexity_api_key =  os.getenv("PPLX_API_KEY")
 
     tomorrow_date = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime("%m-%d-%Y")
-    output_file = f"{tomorrow_date} prediction.json"
+    output_dir = "predictions"
+    os.makedirs(output_dir, exist_ok=True)
+    output_file = os.path.join(output_dir, f"{tomorrow_date} prediction.json")
 
     try:
         with open(data_file, "r") as file:
@@ -85,7 +94,7 @@ def generate_predictions(data_file):
         "Using the given cryptocurrency data and factoring in recent shifts in regulatory policies or announcements from major economies, predict the next day's price and market cap for each cryptocurrency."
         "Provide the output as a JSON array with each cryptocurrency's name, rank, predicted market cap in USD, predicted price in USD, percent_change_1h, percent_change_24h, percent_change_7d, and volume_24h_usd."
         "Ensure your predictions reflect the potential influence of these regulatory changes on market sentiment and performance."
-        "Again provide nothing more than the JSON Array!"
+        "Again provide nothing more than the JSON Array! Get all 100 companies do not fail the json!"
     )
 
     payload = {
@@ -112,7 +121,7 @@ def generate_predictions(data_file):
     payload_json = json.dumps(payload)
 
     headers = {
-        "Authorization": f"Bearer {api_key}",
+        "Authorization": f"Bearer {perplexity_api_key}",
         "Content-Type": "application/json"
     }
 
