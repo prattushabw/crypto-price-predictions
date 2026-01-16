@@ -10,23 +10,7 @@ The project stores outputs in three folders:
 - `predictions/` (next-day predictions from Perplexity)
 - `graphs/` (saved charts)
 
----
-
-## Folder Structure
-
-├── cryptocurrency_data/ # actual CoinMarketCap snapshots (JSON)
-├── predictions/ # Perplexity model predictions (JSON)
-├── graphs/ # comparison charts (PNG)
-├── generate_predictions.py
-├── compare_actual_vs_predicted.py
-└── plot_predictions.py
-
 ## API Keys / Setup
-
-This project uses environment variables loaded from a `.env` file.
-
-Create a `.env` file in the project root:
-
 CMC_API_KEY=your_coinmarketcap_key
 PPLX_API_KEY=your_perplexity_key
 
